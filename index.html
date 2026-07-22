@@ -23,7 +23,8 @@ body{
 }
 
 .container{
-    width:450px;
+    width:600px;
+    max-width:95%;
     background:white;
     padding:40px;
     border-radius:20px;
@@ -40,15 +41,16 @@ h1{
 #numbers{
     display:flex;
     justify-content:center;
-    flex-wrap:wrap;
-    gap:10px;
+    align-items:center;
+    gap:12px;
     margin:35px 0;
-    min-height:65px;
+    min-height:70px;
+    flex-wrap:nowrap;
 }
 
 .ball{
-    width:58px;
-    height:58px;
+    width:55px;
+    height:55px;
     border-radius:50%;
     display:flex;
     justify-content:center;
@@ -57,15 +59,18 @@ h1{
     font-size:22px;
     font-weight:bold;
     box-shadow:0 4px 10px rgba(0,0,0,.2);
-    animation:pop .3s ease;
+    animation:pop .35s ease;
 }
 
 @keyframes pop{
-    from{
+    0%{
         transform:scale(0);
         opacity:0;
     }
-    to{
+    80%{
+        transform:scale(1.15);
+    }
+    100%{
         transform:scale(1);
         opacity:1;
     }
@@ -84,15 +89,6 @@ button:hover{
     transform:scale(1.05);
 }
 
-#generateBtn{
-    background:#007bff;
-    color:white;
-}
-
-#generateBtn:hover{
-    background:#0056b3;
-}
-
 #themeBtn{
     background:#333;
     color:white;
@@ -103,15 +99,23 @@ button:hover{
     background:#555;
 }
 
-/* 다크모드 */
+#generateBtn{
+    background:#007bff;
+    color:white;
+}
+
+#generateBtn:hover{
+    background:#0056b3;
+}
+
+/* ===== 다크모드 ===== */
 
 body.dark{
-    background:linear-gradient(135deg,#111,#222);
+    background:linear-gradient(135deg,#0f172a,#1e293b);
 }
 
 body.dark .container{
-    background:#1f1f1f;
-    color:white;
+    background:#1f2937;
 }
 
 body.dark h1{
@@ -128,11 +132,36 @@ body.dark #themeBtn:hover{
 }
 
 body.dark #generateBtn{
-    background:#2196F3;
+    background:#2563eb;
 }
 
 body.dark #generateBtn:hover{
-    background:#1976D2;
+    background:#1d4ed8;
+}
+
+/* ===== 모바일 ===== */
+
+@media(max-width:650px){
+
+.container{
+    width:95%;
+    padding:25px;
+}
+
+.ball{
+    width:42px;
+    height:42px;
+    font-size:18px;
+}
+
+#numbers{
+    gap:6px;
+}
+
+button{
+    width:100%;
+}
+
 }
 
 </style>
@@ -142,29 +171,28 @@ body.dark #generateBtn:hover{
 
 <div class="container">
 
-    <h1>🎲 로또 번호 추천기</h1>
+<h1>🎲 로또 번호 추천기</h1>
 
-    <button id="themeBtn" onclick="toggleTheme()">
-        🌙 다크모드
-    </button>
+<button id="themeBtn" onclick="toggleTheme()">
+🌙 다크모드
+</button>
 
-    <div id="numbers"></div>
+<div id="numbers"></div>
 
-    <button id="generateBtn" onclick="generateLotto()">
-        번호 추천받기
-    </button>
+<button id="generateBtn" onclick="generateLotto()">
+번호 추천받기
+</button>
 
 </div>
 
 <script>
 
 function getColor(num){
-
-    if(num<=10) return "#fbc400";   // 노랑
-    if(num<=20) return "#69c8f2";   // 파랑
-    if(num<=30) return "#ff7272";   // 빨강
-    if(num<=40) return "#aaaaaa";   // 회색
-    return "#7bcc6d";               // 초록
+    if(num<=10) return "#fbc400";
+    if(num<=20) return "#69c8f2";
+    if(num<=30) return "#ff7272";
+    if(num<=40) return "#aaaaaa";
+    return "#7bcc6d";
 }
 
 function generateLotto(){
@@ -173,10 +201,10 @@ function generateLotto(){
 
     while(numbers.length<6){
 
-        let random=Math.floor(Math.random()*45)+1;
+        let n=Math.floor(Math.random()*45)+1;
 
-        if(!numbers.includes(random)){
-            numbers.push(random);
+        if(!numbers.includes(n)){
+            numbers.push(n);
         }
 
     }
@@ -186,12 +214,14 @@ function generateLotto(){
     const result=document.getElementById("numbers");
     result.innerHTML="";
 
-    numbers.forEach(number=>{
+    numbers.forEach((num,index)=>{
 
         const ball=document.createElement("div");
+
         ball.className="ball";
-        ball.style.background=getColor(number);
-        ball.textContent=number;
+        ball.style.background=getColor(num);
+        ball.style.animationDelay=(index*0.08)+"s";
+        ball.textContent=num;
 
         result.appendChild(ball);
 
@@ -199,7 +229,7 @@ function generateLotto(){
 
 }
 
-// 다크모드
+// ===== 다크모드 =====
 
 const savedTheme=localStorage.getItem("theme");
 
@@ -215,20 +245,15 @@ function toggleTheme(){
     const btn=document.getElementById("themeBtn");
 
     if(document.body.classList.contains("dark")){
-
         btn.innerHTML="☀️ 화이트모드";
         localStorage.setItem("theme","dark");
-
     }else{
-
         btn.innerHTML="🌙 다크모드";
         localStorage.setItem("theme","light");
-
     }
 
 }
 
-// 페이지 열리면 자동으로 한 번 추천
 generateLotto();
 
 </script>
