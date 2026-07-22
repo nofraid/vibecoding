@@ -20,11 +20,12 @@ body{
     min-height:100vh;
     background:linear-gradient(135deg,#4facfe,#00f2fe);
     transition:.3s;
+    padding:30px;
 }
 
 .container{
-    width:600px;
-    max-width:95%;
+    width:700px;
+    max-width:100%;
     background:white;
     padding:40px;
     border-radius:20px;
@@ -102,23 +103,68 @@ button:hover{
 #generateBtn{
     background:#007bff;
     color:white;
+    margin-top:10px;
 }
 
 #generateBtn:hover{
     background:#0056b3;
 }
 
-/* ===== 다크모드 ===== */
+/* 문의 폼 */
+
+.contact{
+    margin-top:50px;
+    text-align:left;
+}
+
+.contact h2{
+    text-align:center;
+    margin-bottom:20px;
+    color:#333;
+}
+
+.contact input,
+.contact textarea{
+    width:100%;
+    padding:14px;
+    margin-bottom:15px;
+    border:1px solid #ccc;
+    border-radius:10px;
+    font-size:16px;
+    outline:none;
+}
+
+.contact input:focus,
+.contact textarea:focus{
+    border-color:#007bff;
+}
+
+.contact textarea{
+    resize:vertical;
+}
+
+.contact button{
+    width:100%;
+    background:#28a745;
+    color:white;
+}
+
+.contact button:hover{
+    background:#218838;
+}
+
+/* 다크모드 */
 
 body.dark{
-    background:linear-gradient(135deg,#0f172a,#1e293b);
+    background:linear-gradient(135deg,#111827,#1f2937);
 }
 
 body.dark .container{
     background:#1f2937;
 }
 
-body.dark h1{
+body.dark h1,
+body.dark .contact h2{
     color:white;
 }
 
@@ -135,16 +181,21 @@ body.dark #generateBtn{
     background:#2563eb;
 }
 
-body.dark #generateBtn:hover{
-    background:#1d4ed8;
+body.dark .contact input,
+body.dark .contact textarea{
+    background:#374151;
+    color:white;
+    border:1px solid #555;
 }
 
-/* ===== 모바일 ===== */
+body.dark .contact input::placeholder,
+body.dark .contact textarea::placeholder{
+    color:#bbb;
+}
 
-@media(max-width:650px){
+@media(max-width:700px){
 
 .container{
-    width:95%;
     padding:25px;
 }
 
@@ -163,7 +214,6 @@ button{
 }
 
 }
-
 </style>
 </head>
 
@@ -182,6 +232,41 @@ button{
 <button id="generateBtn" onclick="generateLotto()">
 번호 추천받기
 </button>
+
+<div class="contact">
+
+<hr style="margin:40px 0;">
+
+<h2>📩 제휴 문의</h2>
+
+<!-- YOUR_FORM_ID를 Formspree에서 받은 ID로 변경 -->
+<form action="https://formspree.io/f/mbdnajdd" method="POST">
+
+<input
+type="text"
+name="name"
+placeholder="이름 또는 회사명"
+required>
+
+<input
+type="email"
+name="email"
+placeholder="이메일"
+required>
+
+<textarea
+name="message"
+rows="6"
+placeholder="문의 내용을 입력해주세요."
+required></textarea>
+
+<button type="submit">
+문의 보내기
+</button>
+
+</form>
+
+</div>
 
 </div>
 
@@ -228,8 +313,6 @@ function generateLotto(){
     });
 
 }
-
-// ===== 다크모드 =====
 
 const savedTheme=localStorage.getItem("theme");
 
